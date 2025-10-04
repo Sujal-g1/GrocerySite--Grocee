@@ -18,13 +18,13 @@ const values = [
     id: 3,
     title: "Easy returns",
     para: "Hassle-free returns if you’re not completely satisfied with your order.",
-    icon: FaShieldAlt ,
+    icon: FaSeedling ,
   }, 
   {
     id: 4,
     title: "Secure payments",
     para: "Shop confidently with our safe and secure payment options.",
-    icon: FaSeedling ,
+    icon:  FaShieldAlt,
   }
 ];
 

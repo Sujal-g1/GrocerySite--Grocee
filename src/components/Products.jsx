@@ -22,7 +22,9 @@ import { FaHeart, FaLeaf, FaSeedling , FaShieldAlt} from "react-icons/fa";
 import Basket from '../assets/basket-full-vegetables.png'
 
 import vegetables from "./dataFiles/vegetables"
+import fruits from "./dataFiles/fruits.js"
 
+import { useCart } from "../components/CartContext";
 
 const Products = () => {
 
@@ -86,6 +88,8 @@ const productCards = ProductList.slice(0,8).map(product=>{
         <Cards image={product.image} name={product.name} price={product.price} />
     )
 })
+
+const { addToCart } = useCart();
        
 
   return (
@@ -99,23 +103,23 @@ const productCards = ProductList.slice(0,8).map(product=>{
 
         {/* logo */}
         <a href="#" className ="absolute left-1/2 transform -translate-x-1/2 text-5xl font-bold hover:text-2xl transition-all duration-500">Gr
-            <span className = "text-orange-500 uppercase hover:text-9xl transition-all duration-500">O</span>
+            <span className = "text-orange-500 uppercase hover:text-9xl  hover:text-green-800 transition-all duration-500">O</span>
             cee</a>
     
         {/* heart , bag & menu icon */}
 
-        {/* <div className="flex items-center gap-x-10"> */}
+        <div className="flex items-center gap-x-10"> 
     
-        {/* <a href="#" alt="" className="text-zinc-800 text-2xl "> <GoHeartFill /> </a> */}
+        <a href="#" alt="" className="text-zinc-800 text-2xl "> <GoHeartFill /> </a>
         
-        {/* <a  onClick={() => navigate('/checkout')}
-        className="text-zinc-800 text-2xl "> <HiShoppingBag /> </a> */}
+        <a  onClick={() => navigate('/cart')}
+        className="text-zinc-800 text-2xl "> <HiShoppingBag /> </a>
     
         {/* menu icon */}
-        {/* <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}>
+         <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}>
        {showMenu ? <TbMenu3/> : <TbMenu2/> }</a>
-     */}
-        {/* </div> */}
+     
+        </div>
     
         </nav>
        </header>
@@ -161,6 +165,7 @@ const productCards = ProductList.slice(0,8).map(product=>{
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6">
 
+                {/* vegetables grid */}
         {vegetables.map((veg) => (
   <div
     key={veg.id}
@@ -193,8 +198,43 @@ const productCards = ProductList.slice(0,8).map(product=>{
   </div>
 ))}
 
+    {/* fruits grid */}
+
+        {fruits.map((fruit) => (
+  <div
+    key={fruit.id}
+    className="relative bg-white rounded-2xl shadow hover:shadow-lg p-3 flex flex-col"
+  >
+   
+
+    <div className="h-32 flex items-center justify-center">
+      <img src={fruit.img} alt={fruit.name} className="object-contain h-full" />
+    </div>
+
+    <div className="mt-3">
+      <h3 className="text-sm font-semibold">{fruit.name}</h3>
+      <p className="text-xs text-gray-500">{fruit.qty}</p>
+    </div>
+
+    <div className="mt-2 flex items-center gap-2">
+      <span className="text-base font-bold">₹{fruit.price}</span>
+      <span className="text-gray-400 line-through text-sm">₹{fruit.oldPrice}</span>
+    </div>
+
+    <button
+        onClick={() =>{ addToCart(fruit)
+           console.log("Cart after add:", fruit);
+        } }
+       
+     className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
+      ADD
+    </button>
+  </div>
+))}
+
 
       </div>
+
     </div>
 
                

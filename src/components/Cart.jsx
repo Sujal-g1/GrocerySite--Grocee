@@ -46,19 +46,40 @@ const Cart = () => {
     }
   };
 
-  const handlePayment = () => {
-    if (
-      !address.name ||
-      !address.street ||
-      !address.city ||
-      !address.state ||
-      !address.pincode ||
-      !address.phone
-    ) {
-      return alert("Please fill all address fields");
+  // const handlePayment = () => {
+  //   if (
+  //     !address.name ||
+  //     !address.street ||
+  //     !address.city ||
+  //     !address.state ||
+  //     !address.pincode ||
+  //     !address.phone
+  //   ) {
+  //     return alert("Please fill all address fields");
+  //   }
+  //   alert(`Payment successful! Total: ₹${total}`);
+  // };
+
+
+  // payment stripe
+
+  const handleCheckout = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/create-session-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ cart }), // send cart
+    });
+
+    const data = await response.json();
+    if (data.url) {
+      window.location.href = data.url; // redirect to Stripe
     }
-    alert(`Payment successful! Total: ₹${total}`);
-  };
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+  }
+};
+
 
   return (
     <div className="p-6 pt-[14vh] md:pt-[16vh]">
@@ -75,7 +96,7 @@ const Cart = () => {
             className="absolute left-1/2 transform -translate-x-1/2 text-5xl font-bold hover:text-2xl transition-all duration-500"
           >
             Gr
-            <span className="text-orange-500 uppercase hover:text-9xl transition-all duration-500">
+            <span className="text-orange-500 uppercase hover:text-9xl  hover:text-green-800 transition-all duration-500">
               O
             </span>
             cee
@@ -210,7 +231,7 @@ const Cart = () => {
 
           {/* Pay Button */}
           <button
-            onClick={handlePayment}
+           onClick={handleCheckout}
             className="w-full mt-4 bg-orange-500 text-white py-2 rounded hover:bg-orange-600 text-lg font-semibold"
           >
             Pay Now

@@ -11,6 +11,7 @@ import FruitsCat from '../assets/fruits-and-veggies.png'
 import SeafoodCat from '../assets/meat-and-seafood.png'
 import DairyCat from '../assets/dairy-and-eggs.png'
 import Button from './Button'
+import Valuesimg from '../assets/valuesImg.jpg'
 
 import Heading from './Heading'
 import ProductList from './dataFiles/productList.js'
@@ -403,9 +404,9 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
              </div>
 
             {/* image */}
-            {/* <div className='md:flex  w-1/2 hidden'>
-                <img src={Basket} />
-            </div> */}
+            <div className='md:flex  w-1/2 hidden '>
+                <img className='rounded-full' src={Valuesimg} />
+            </div>
 
             {/* right */}
             <div className='md:min-h-100 md:gap-15 flex flex-col justify-between'>
@@ -423,19 +424,20 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
            {/* category section starts  */}
 
-          <section>
+          {/* <section>
 
             <div className="py-20 max-w-[1400px] px-10 mx-auto">
          <Heading highlight ="Shop" heading="by Category" />
 
-         {/* category cards */}
+         category cards
+
         <div className="flex flex-wrap gap-10 mt-10 md:mt-20">
            {categoryCards}
         </div>
 
             </div>
 
-        </section>
+        </section> */}
 
             {/* category section ends  */}
 
