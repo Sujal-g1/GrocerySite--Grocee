@@ -126,6 +126,8 @@ const scrollToProducts = () => {
  // live location code 
 
   const [locationName, setLocationName] = useState("Fetching...");
+  const [startPoint, setStartPoint] = useState(""); // default empty
+
 
 useEffect(() => {
   if (navigator.geolocation) {
@@ -161,7 +163,7 @@ useEffect(() => {
       },
       (err) => {
         console.warn("GPS error:", err);
-        setLocationName("Location unavailable");
+        setLocationName(`Location unavailable: ${err.message}`);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
     );
@@ -222,7 +224,7 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
         {/* logo */}
         <a href="#" className ="absolute left-1/2 transform -translate-x-1/2 text-5xl font-bold hover:text-2xl transition-all duration-500">Gr
-            <span className = "text-orange-500 uppercase hover:text-9xl transition-all duration-500">O</span>
+            <span className = "text-orange-500 uppercase hover:text-9xl hover:text-green-800 transition-all duration-500">O</span>
             cee</a>
 
 
@@ -263,18 +265,19 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
 
     {/* heart , bag & menu icon */}
-    <div className="flex items-center gap-x-10">
-
-    <a href="#" alt="" className="text-zinc-800 text-3xl "> <GoHeartFill /> </a>
     
-    <a  onClick={() => navigate('/checkout')}
-    className="text-zinc-800 text-3xl "> <HiShoppingBag /> </a>
+    {/* <div className="flex items-center gap-x-10"> */}
+
+    {/* <a href="#" alt="" className="text-zinc-800 text-3xl "> <GoHeartFill /> </a> */}
+    
+    {/* <a  onClick={() => navigate('/cart')}
+    className="text-zinc-800 text-3xl "> <HiShoppingBag /> </a> */}
 
     {/* menu icon */}
-    <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}>
-   {showMenu ? <TbMenu3/> : <TbMenu2/> }</a>
+    {/* <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}>
+   {showMenu ? <TbMenu3/> : <TbMenu2/> }</a> */}
 
-    </div>
+    {/* </div> */}
 
 
         {/* Mobile menu */}
@@ -315,14 +318,14 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
         
             {/* hero content */}
             <div className="flex-1">
-             <span className="bg-orange-100 text-orange-500 text-lg px-5 py-2 rounded-full"> Export Best Quality...</span> 
-              <h1 className="md:text-7xl/20  text-5xl/14 mt-4 font-bold ">Tasty Organic  
-             <br/> <span className="text-orange-500 "> Fruits</span> & 
-             <span className="text-orange-500 "> Veggies </span>  <br/> In Your City
+             {/* <span className="bg-orange-100 text-orange-500 text-lg px-5 py-2 rounded-full"> Excellence You Can Rely On...</span>  */}
+              <h1 className="md:text-7xl/20  text-5xl/14 mt-4 font-bold ">All Your Essentials, <br />
+             <span className="text-orange-500 ">Delivered</span>  Fast,  <br /> With a 
+              <span className="text-orange-500 "> Smile.</span>
             </h1>
         
                         <p className="text-zinc-600 md:text-lg text-md max-w-[530px] mt-5 mb-10">
-                            Bread for a high content of beneficial substances. Our products are all fresh and healthy. 
+                          Simplifying your everyday chores by delivering everything you need for your home, hassle-free.
                         </p>
 
                         <a  onClick={() => navigate('/products')}
@@ -337,7 +340,7 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
                         <img src={Grocery} alt="hero image" />
                     </div>
         
-                    </div>
+                    </div>  
                 </section>
 
         {/* main header ends  */}
@@ -347,14 +350,14 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
          <div className='pt-6 pb-6 px-9'>
       <section className="w-full bg-green-800 rounded-lg shadow-lg p-5">
-        <div className='flex flex-col md:flex-row items-center gap-6'>
+        <div className='flex flex-col md:flex-row gap-6'>
 
           {/* Text Content */}
           <div className='md:w-1/2 w-full'>
             <h1 className='text-4xl text-white'>
-              get <span className='text-amber-300 font-bold text-5xl leading-relaxed'>FREE DELIVERY</span> on
+              get <span className='text-amber-300 font-bold text-5xl leading-relaxed'>FREE DELIVERY</span> 
               <br />
-              Shopping above 250
+             on Shopping above 250
             </h1>
 
             <p className='text-white text-md mt-8'>
@@ -371,12 +374,14 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
           </div>
 
           {/* Image Content */}
-          <div className='md:w-1/2 w-full flex justify-center'>
-            <img
-              src=""
-              alt="hero"
-              className="w-full max-w-xs md:max-w-sm object-contain"
-            />
+          <div className='md:w-1/2 w-full '>
+           <h1 className='text-5xl text-amber-300 font-bold text-center leading-relaxed'> COUPONS</h1>
+           <ul className='text-center text-2xl font-bold text-lime-200'>
+            <li>SAVE10</li>
+            <li>SAVE20</li>
+            <li>FESTIVE5</li>
+            <li>NEWUSER40</li>
+           </ul>
           </div>
 
         </div>
@@ -389,7 +394,7 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
              <section>
             <div className="max-w-[1400px] mx-auto px-10 py-20 ">
-                <Heading highlight="Our" heading="Values"/>
+                <Heading highlight="Why" heading="Shop with US ?"/>
 
         <div className="flex flex-col md:flex-row md:gap-5 gap-15 mt-10">
             {/* left */}
@@ -398,9 +403,9 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
              </div>
 
             {/* image */}
-            <div className='md:flex  w-1/2 hidden'>
+            {/* <div className='md:flex  w-1/2 hidden'>
                 <img src={Basket} />
-            </div>
+            </div> */}
 
             {/* right */}
             <div className='md:min-h-100 md:gap-15 flex flex-col justify-between'>

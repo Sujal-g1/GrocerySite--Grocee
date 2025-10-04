@@ -1,5 +1,6 @@
 // src/pages/Vegetables.jsx
 import React ,{useEffect ,useState} from 'react'
+import { useCart } from "./CartContext";
 import { useNavigate } from 'react-router-dom';
 import { IoSearch } from "react-icons/io5";
 import { GoHeartFill } from "react-icons/go"
@@ -9,8 +10,10 @@ import vegetables from "./dataFiles/vegetables"
 
 
 const Vegetables = () => {
+const { addToCart } = useCart(); 
 
     const navigate = useNavigate();
+
     const [showMenu,setShowMenu] = useState(false);
      
     const toggleMenu = () => {
@@ -39,7 +42,7 @@ const Vegetables = () => {
         {/* logo */}
         <a href="#" className ="absolute left-1/2 transform -translate-x-1/2 text-5xl font-bold hover:text-2xl transition-all duration-500">Gr
             <span className = "text-orange-500 uppercase hover:text-9xl transition-all duration-500">O</span>
-            cify</a>
+            cee</a>
     
 
         {/* heart , bag & menu icon */}
@@ -47,7 +50,7 @@ const Vegetables = () => {
     
         <a href="#" alt="" className="text-zinc-800 text-2xl "> <GoHeartFill /> </a>
         
-        <a  onClick={() => navigate('/checkout')}
+        <a  onClick={() => navigate('/cart')}
         className="text-zinc-800 text-2xl "> <HiShoppingBag /> </a>
     
         {/* menu icon */}
@@ -95,7 +98,12 @@ const Vegetables = () => {
       <span className="text-gray-400 line-through text-sm">₹{veg.oldPrice}</span>
     </div>
 
-    <button className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
+    <button
+        onClick={() =>{ addToCart(veg)
+           console.log("Cart after add:", veg);
+        } }
+       
+     className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
       ADD
     </button>
   </div>
@@ -104,6 +112,7 @@ const Vegetables = () => {
 
       </div>
     </div>
+    
     </div>
   );
 };
