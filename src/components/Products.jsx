@@ -23,6 +23,9 @@ import Basket from '../assets/basket-full-vegetables.png'
 
 import vegetables from "./dataFiles/vegetables"
 import fruits from "./dataFiles/fruits.js"
+import dairy from "./dataFiles/dairy.js"
+import atta from "./dataFiles/atta&dal.js"
+
 
 import { useCart } from "../components/CartContext";
 
@@ -42,7 +45,7 @@ const Products = () => {
   { name: 'Fruits', path: '/fruits' },
   { name: 'Vegetables', path: '/vegetables' },
   { name: 'Dairy', path: '/dairy' },
-  { name: 'SeaFood', path: '/seafood' }
+  { name: 'Atta & Dal', path: '/atta&dal' }
 ];
 
     const [activeTab , setActiveTab] = useState('All');
@@ -232,6 +235,74 @@ const { addToCart } = useCart();
   </div>
 ))}
 
+
+   {/* Dairy grid */}
+
+        {dairy.map((dairy) => (
+  <div
+    key={dairy.id}
+    className="relative bg-white rounded-2xl shadow hover:shadow-lg p-3 flex flex-col"
+  >
+   
+
+    <div className="h-32 flex items-center justify-center">
+      <img src={dairy.img} alt={dairy.name} className="object-contain h-full" />
+    </div>
+
+    <div className="mt-3">
+      <h3 className="text-sm font-semibold">{dairy.name}</h3>
+      <p className="text-xs text-gray-500">{dairy.qty}</p>
+    </div>
+
+    <div className="mt-2 flex items-center gap-2">
+      <span className="text-base font-bold">₹{dairy.price}</span>
+      <span className="text-gray-400 line-through text-sm">₹{dairy.oldPrice}</span>
+    </div>
+
+    <button
+        onClick={() =>{ addToCart(dairy)
+           console.log("Cart after add:", dairy);
+        } }
+       
+     className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
+      ADD
+    </button>
+  </div>
+))}
+
+ {/* Atta and dal grid */}
+
+        {atta.map((attas) => (
+  <div
+    key={attas.id}
+    className="relative bg-white rounded-2xl shadow hover:shadow-lg p-3 flex flex-col"
+  >
+   
+
+    <div className="h-32 flex items-center justify-center">
+      <img src={attas.img} alt={attas.name} className="object-contain h-full" />
+    </div>
+
+    <div className="mt-3">
+      <h3 className="text-sm font-semibold">{attas.name}</h3>
+      <p className="text-xs text-gray-500">{attas.qty}</p>
+    </div>
+
+    <div className="mt-2 flex items-center gap-2">
+      <span className="text-base font-bold">₹{attas.price}</span>
+      <span className="text-gray-400 line-through text-sm">₹{attas.oldPrice}</span>
+    </div>
+
+    <button
+        onClick={() =>{ addToCart(attas)
+           console.log("Cart after add:", attas);
+        } }
+       
+     className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
+      ADD
+    </button>
+  </div>
+))}
 
       </div>
 

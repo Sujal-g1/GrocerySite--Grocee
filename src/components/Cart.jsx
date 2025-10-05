@@ -14,7 +14,10 @@ const Cart = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+const [loadingLocation, setLoadingLocation] = useState(false); // to prevent use my current location from multiple clicks
+
   const [discount, setDiscount] = useState(0);
+
   const [address, setAddress] = useState({
     name: "",
     street: "",
@@ -23,6 +26,54 @@ const Cart = () => {
     pincode: "",
     phone: "",
   });
+
+ // 🔹 Extract location fetching into a function so we can reuse it
+const fetchLocation = async () => {
+   setLoadingLocation(true);
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await res.json();
+          if (data && data.address) {
+               setAddress((prev) => ({
+                ...prev,
+                street: `${data.address.house_number ? data.address.house_number + ", " : ""}${data.address.road || data.address.suburb || ""}`,city:
+                data.address.city ||
+                data.address.town ||
+                data.address.village || "",
+                state: data.address.state || "",
+                pincode: data.address.postcode || "",
+                lat: latitude, 
+                lng: longitude, 
+                name: prev.name,   // keep user input
+                phone: prev.phone, // keep user input
+                }));
+
+          }
+        } catch (err) {
+          console.error("Reverse geocode failed:", err);
+        }
+      },
+      (err) => {
+        console.warn("GPS error:", err);
+        alert(`Location unavailable: ${err.message}`);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
+    );
+  } else {
+    alert("Geolocation not supported by your browser");
+  }
+  setLoadingLocation(false); 
+};
+
+
+// live location ends
+
 
   const toggleMenu = () => setShowMenu(!showMenu);
 
@@ -46,19 +97,19 @@ const Cart = () => {
     }
   };
 
-  // const handlePayment = () => {
-  //   if (
-  //     !address.name ||
-  //     !address.street ||
-  //     !address.city ||
-  //     !address.state ||
-  //     !address.pincode ||
-  //     !address.phone
-  //   ) {
-  //     return alert("Please fill all address fields");
-  //   }
-  //   alert(`Payment successful! Total: ₹${total}`);
-  // };
+  const handlePayment = () => {
+    if (
+      !address.name ||
+      !address.street ||
+      !address.city ||
+      !address.state ||
+      !address.pincode ||
+      !address.phone
+    ) {
+      return alert("Please fill all address fields");
+    }
+    alert(`Payment successful! Total: ₹${total}`);
+  };
 
 
   // payment stripe
@@ -68,11 +119,31 @@ const Cart = () => {
     const response = await fetch('http://localhost:3000/create-session-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ cart }), // send cart
+      body: JSON.stringify({ cart }),
     });
 
     const data = await response.json();
     if (data.url) {
+      // Before redirect, save order in localStorage
+      const userLat = address.lat || 28.6139; // fallback
+      const userLng = address.lng || 77.2090;
+
+      const order = {
+        id: Date.now(),
+        cart,
+        total,
+        address,
+        deliveryTime: Math.floor(Math.random() * 4 * 60 * 1000) + 60 * 1000, // 1-5 mins
+        driverLocation: {
+          lat: userLat + (Math.random() - 0.5) / 500, // random nearby
+          lng: userLng + (Math.random() - 0.5) / 500,
+        },
+        status: 'in-progress',
+      };
+
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      localStorage.setItem('orders', JSON.stringify([...orders, order]));
+      
       window.location.href = data.url; // redirect to Stripe
     }
   } catch (error) {
@@ -80,6 +151,10 @@ const Cart = () => {
   }
 };
 
+
+
+
+// ---------------
 
   return (
     <div className="p-6 pt-[14vh] md:pt-[16vh]">
@@ -180,54 +255,64 @@ const Cart = () => {
             </div>
           </div>
 
-          {/* Address Form (Full Width) */}
-          <div className="mt-6 border-t pt-4 space-y-2">
-            <h3 className="font-semibold text-lg">Delivery Address</h3>
-            <div className="grid md:grid-cols-2 gap-2">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={address.name}
-                onChange={(e) => setAddress({ ...address, name: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="Street Address"
-                value={address.street}
-                onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                value={address.city}
-                onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="State"
-                value={address.state}
-                onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="Pincode"
-                value={address.pincode}
-                onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="Phone Number"
-                value={address.phone}
-                onChange={(e) => setAddress({ ...address, phone: e.target.value })}
-                className="w-full border rounded px-2 py-1"
-              />
-            </div>
-          </div>
+        {/* Address Form (Full Width) */}
+<div className="mt-6 border-t pt-4 space-y-2">
+  <h3 className="font-semibold text-lg">Delivery Address</h3>
+  <div className="grid md:grid-cols-2 gap-2">
+    <input
+      type="text"
+      placeholder="Full Name"
+      value={address.name}
+      onChange={(e) => setAddress({ ...address, name: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+    <input
+      type="text"
+      placeholder="Street Address"
+      value={address.street}
+      onChange={(e) => setAddress({ ...address, street: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+    <input
+      type="text"
+      placeholder="City"
+      value={address.city}
+      onChange={(e) => setAddress({ ...address, city: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+    <input
+      type="text"
+      placeholder="State"
+      value={address.state}
+      onChange={(e) => setAddress({ ...address, state: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+    <input
+      type="text"
+      placeholder="Pincode"
+      value={address.pincode}
+      onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+    <input
+      type="text"
+      placeholder="Phone Number"
+      value={address.phone}
+      onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+      className="w-full border rounded px-2 py-1"
+    />
+  </div>
+
+  {/* Use My Location Button */}
+      <button
+      onClick={fetchLocation}
+      disabled={loadingLocation}
+      className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition disabled:opacity-50">
+      {loadingLocation ? "Fetching..." : "Use My Current Location"}
+      </button>
+
+</div>
+
 
           {/* Pay Button */}
           <button
@@ -236,6 +321,9 @@ const Cart = () => {
           >
             Pay Now
           </button>
+
+
+
         </>
       )}
     </div>

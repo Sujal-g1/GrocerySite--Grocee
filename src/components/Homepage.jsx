@@ -4,6 +4,8 @@ import { GoHeartFill } from "react-icons/go"
 import { HiShoppingBag } from "react-icons/hi2"
 import { IoSearch } from "react-icons/io5";
 import { TbMenu2,TbMenu3  } from "react-icons/tb";
+import { MdHistory } from "react-icons/md";
+
 import { MdLocationOn } from "react-icons/md";
 
 import Grocery from '../assets/grocery.png'
@@ -164,7 +166,7 @@ useEffect(() => {
       },
       (err) => {
         console.warn("GPS error:", err);
-        setLocationName(`Location unavailable: ${err.message}`);
+        setLocationName(`Location unavailable: ${err.message} (code: ${err.code})`);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
     );
@@ -206,6 +208,16 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
   }
 };
 
+// tracking order , only show while order is running
+
+const [activeOrders, setActiveOrders] = useState([]);
+
+useEffect(() => {
+    // Fetch orders from localStorage
+    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    const inProgress = orders.filter((o) => o.status === "in-progress");
+    setActiveOrders(inProgress);
+  }, []);
 
 
   return (
@@ -267,18 +279,30 @@ const fetchSuggestions = async (query, setSuggestions, setShow) => {
 
     {/* heart , bag & menu icon */}
     
-    {/* <div className="flex items-center gap-x-10"> */}
+    <div className="flex items-center gap-x-10">
 
     {/* <a href="#" alt="" className="text-zinc-800 text-3xl "> <GoHeartFill /> </a> */}
     
-    {/* <a  onClick={() => navigate('/cart')}
-    className="text-zinc-800 text-3xl "> <HiShoppingBag /> </a> */}
+     {activeOrders.length > 0 && (
+   <a 
+    onClick={() => navigate('/track-order')}
+    className="relative fixed bottom-5 right-5 bg-orange-500 text-white p-4 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-orange-600 transition"
+    title="Track Your Order">
+    <MdHistory />
+
+    {/* Badge showing number of active orders */}
+    <span className="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+      {activeOrders.length}
+    </span>
+  </a>
+)}
+
 
     {/* menu icon */}
-    {/* <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}>
-   {showMenu ? <TbMenu3/> : <TbMenu2/> }</a> */}
+      {/* <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}> 
+      {showMenu ? <TbMenu3/> : <TbMenu2/> }</a>  */}
 
-    {/* </div> */}
+    </div>
 
 
         {/* Mobile menu */}

@@ -6,10 +6,10 @@ import { IoSearch } from "react-icons/io5";
 import { GoHeartFill } from "react-icons/go"
 import { HiShoppingBag } from "react-icons/hi2"
 import { TbMenu2,TbMenu3  } from "react-icons/tb";
-import Fruits from "./dataFiles/fruits"
+import Dairy from "./dataFiles/dairy"
 
 
-const  fruits = () => {
+const  dairy = () => {
 const { addToCart } = useCart(); 
 
     const navigate = useNavigate();
@@ -71,38 +71,38 @@ const { addToCart } = useCart();
 
       {/* Title */}
       <h2 className="mt-6 text-lg font-semibold">
-        Showing results for <span className="text-green-600">"fruits"</span>
+        Showing results for <span className="text-green-600">"Dairy"</span>
       </h2>
 
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-6">
 
-     {/* fruits grid */}
+     {/* Dairy grid */}
 
-        {Fruits.map((fruit) => (
+        {Dairy.map((dairy) => (
   <div
-    key={fruit.id}
+    key={dairy.id}
     className="relative bg-white rounded-2xl shadow hover:shadow-lg p-3 flex flex-col"
   >
    
 
     <div className="h-32 flex items-center justify-center">
-      <img src={fruit.img} alt={fruit.name} className="object-contain h-full" />
+      <img src={dairy.img} alt={dairy.name} className="object-contain h-full" />
     </div>
 
     <div className="mt-3">
-      <h3 className="text-sm font-semibold">{fruit.name}</h3>
-      <p className="text-xs text-gray-500">{fruit.qty}</p>
+      <h3 className="text-sm font-semibold">{dairy.name}</h3>
+      <p className="text-xs text-gray-500">{dairy.qty}</p>
     </div>
 
     <div className="mt-2 flex items-center gap-2">
-      <span className="text-base font-bold">₹{fruit.price}</span>
-      <span className="text-gray-400 line-through text-sm">₹{fruit.oldPrice}</span>
+      <span className="text-base font-bold">₹{dairy.price}</span>
+      <span className="text-gray-400 line-through text-sm">₹{dairy.oldPrice}</span>
     </div>
 
     <button
-        onClick={() =>{ addToCart(fruit)
-           console.log("Cart after add:", fruit);
+        onClick={() =>{ addToCart(dairy)
+           console.log("Cart after add:", dairy);
         } }
        
      className="mt-auto bg-green-100 text-green-600 font-semibold py-1 px-3 rounded-lg hover:bg-green-200 self-center">
@@ -113,10 +113,11 @@ const { addToCart } = useCart();
 
 
       </div>
+      
     </div>
     
     </div>
   );
 };
 
-export default fruits;
+export default dairy;
