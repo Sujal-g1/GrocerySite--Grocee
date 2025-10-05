@@ -2,7 +2,6 @@
 import React ,{useEffect ,useState} from 'react'
 import { useCart } from "./CartContext";
 import { useNavigate } from 'react-router-dom';
-import { IoSearch } from "react-icons/io5";
 import { GoHeartFill } from "react-icons/go"
 import { HiShoppingBag } from "react-icons/hi2"
 import { TbMenu2,TbMenu3  } from "react-icons/tb";

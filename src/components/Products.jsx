@@ -1,25 +1,15 @@
 // src/pages/Vegetables.jsx
 import React ,{useEffect ,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { IoSearch } from "react-icons/io5";
 import { GoHeartFill } from "react-icons/go"
 import { HiShoppingBag } from "react-icons/hi2"
 import { TbMenu2,TbMenu3  } from "react-icons/tb";
 
-import Grocery from '../assets/grocery.png'
-import FruitsCat from '../assets/fruits-and-veggies.png'
-import SeafoodCat from '../assets/meat-and-seafood.png'
-import DairyCat from '../assets/dairy-and-eggs.png'
-import Button from './Button'
 
 import Heading from './Heading'
 import ProductList from './dataFiles/productList.js'
-import Values from './dataFiles/values.js'
 import Category from './dataFiles/category.js'
 import Cards from './Cards.jsx'
-
-import { FaHeart, FaLeaf, FaSeedling , FaShieldAlt} from "react-icons/fa";
-import Basket from '../assets/basket-full-vegetables.png'
 
 import vegetables from "./dataFiles/vegetables"
 import fruits from "./dataFiles/fruits.js"

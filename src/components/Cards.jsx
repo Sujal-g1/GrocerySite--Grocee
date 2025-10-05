@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FaHeart, FaPlus } from 'react-icons/fa'
-import Button from './Button'
+
 
 const Cards = ({ image, name, price }) => {
   const [isFav, setIsFav] = useState(false)

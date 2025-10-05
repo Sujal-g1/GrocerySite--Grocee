@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
-import { GoHeartFill } from "react-icons/go";
-import { HiShoppingBag } from "react-icons/hi2";
-import { TbMenu2, TbMenu3 } from "react-icons/tb";
 import coupons from "./dataFiles/coupons";
 
 const Cart = () => {

@@ -1,28 +1,18 @@
 import React ,{useEffect ,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { GoHeartFill } from "react-icons/go"
-import { HiShoppingBag } from "react-icons/hi2"
-import { IoSearch } from "react-icons/io5";
-import { TbMenu2,TbMenu3  } from "react-icons/tb";
 import { MdHistory } from "react-icons/md";
 
 import { MdLocationOn } from "react-icons/md";
 
 import Grocery from '../assets/grocery.png'
-import FruitsCat from '../assets/fruits-and-veggies.png'
-import SeafoodCat from '../assets/meat-and-seafood.png'
-import DairyCat from '../assets/dairy-and-eggs.png'
-import Button from './Button'
 import Valuesimg from '../assets/valuesImg.jpg'
+
 
 import Heading from './Heading'
 import ProductList from './dataFiles/productList.js'
 import Values from './dataFiles/values.js'
 import Category from './dataFiles/category.js'
 import Cards from './Cards.jsx'
-
-import { FaHeart, FaLeaf, FaSeedling , FaShieldAlt} from "react-icons/fa";
-import Basket from '../assets/basket-full-vegetables.png'
 
 
 const Homepage = () => {
