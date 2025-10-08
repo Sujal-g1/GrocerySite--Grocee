@@ -1,4 +1,4 @@
-import React ,{useEffect ,useState} from 'react'
+import React ,{useEffect ,useState, useRef} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { MdHistory } from "react-icons/md";
 
@@ -13,6 +13,10 @@ import ProductList from './dataFiles/productList.js'
 import Values from './dataFiles/values.js'
 import Category from './dataFiles/category.js'
 import Cards from './Cards.jsx'
+
+import { motion } from "framer-motion";
+
+
 
 
 const Homepage = () => {
@@ -157,8 +161,8 @@ useEffect(() => {
       (err) => {
         console.warn("GPS error:", err);
         setLocationName(`Location unavailable: ${err.message} (code: ${err.code})`);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
+      }
+      // { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
     );
   } else {
     setLocationName("Geolocation not supported");
@@ -209,12 +213,19 @@ useEffect(() => {
     setActiveOrders(inProgress);
   }, []);
 
+// screen effect code
+
+
 
   return (
+    
    <div>
+  
+
+    <div style={{ position: 'relative', zIndex: 1 }}>
      {/* navbar header starts  */}
 
-   <header className={`fixed top-0 right-0 left-0 z-50 bg-white ${isScrolled ? 'shadow-lg' : "" }`}>
+    <header className={`fixed top-0 right-0 left-0 z-50 bg-white ${isScrolled ? 'shadow-lg' : "" }`}>
     <nav className= "relative flex items-center  md:h-[14vh] h-[12vh] max-w-[1400px] mx-auto px-10">
 
          {/* Left placeholder (can be empty or nav links later) */}
@@ -229,43 +240,6 @@ useEffect(() => {
         <a href="#" className ="absolute left-1/2 transform -translate-x-1/2 text-5xl font-bold hover:text-2xl transition-all duration-500">Gr
             <span className = "text-orange-500 uppercase hover:text-9xl hover:text-green-800 transition-all duration-500">O</span>
             cee</a>
-
-
-    {/* nav links   */}
-
-        {/* <div className=" ml-10 transform -translate-x-1/2 flex gap-8">
-          <a  className=" font-bold relative after:absolute after:left-0 after:-bottom-1 after:h-1 after:w-full after:rounded-full
-             after:bg-gradient-to-r after:from-green-700 after:via-green-800 after:to-green-900
-             after:scale-x-0 after:origin-left hover:after:scale-x-100
-             after:transition-transform after:duration-300" href="#" >Home</a>
-
-          <a  className=" font-bold relative after:absolute after:left-0 after:-bottom-1 after:h-1 after:w-full after:rounded-full
-             after:bg-gradient-to-r after:from-green-700 after:via-green-800 after:to-green-900
-             after:scale-x-0 after:origin-left hover:after:scale-x-100
-             after:transition-transform after:duration-300" href="#" >TEXT</a>
-
-              <a  className=" font-bold relative after:absolute after:left-0 after:-bottom-1 after:h-1 after:w-full after:rounded-full
-             after:bg-gradient-to-r after:from-green-700 after:via-green-800 after:to-green-900
-             after:scale-x-0 after:origin-left hover:after:scale-x-100
-             after:transition-transform after:duration-300" href="#" >TEXT</a>
-
-              <a  className=" font-bold relative after:absolute after:left-0 after:-bottom-1 after:h-1 after:w-full after:rounded-full
-             after:bg-gradient-to-r after:from-green-700 after:via-green-800 after:to-green-900
-             after:scale-x-0 after:origin-left hover:after:scale-x-100
-             after:transition-transform after:duration-300" href="#" >TEXT</a>
-
-        </div>  */}
-
-
-    {/* search bar */}
-    {/* <div className="md:flex p-2  border-2 border-green-900 rounded-full hidden">
-        <input type="text" name="text" id="text" placeholder="Search.." className=" flex-1 h-[5vh] px-3 focus:outline-none" />
-        <button className="bg-gradient-to-b from-green-600 to-green-800 text-white w-10 h-10 flex justify-center items-center rounded-full text-xl">
-          <IoSearch />
-         </button>
-    </div> */}
-
-
 
     {/* heart , bag & menu icon */}
     
@@ -286,39 +260,7 @@ useEffect(() => {
     </span>
   </a>
 )}
-
-
-    {/* menu icon */}
-      {/* <a href="#" className="text-zinc-800 text-3xl md:hidden " onClick={toggleMenu}> 
-      {showMenu ? <TbMenu3/> : <TbMenu2/> }</a>  */}
-
     </div>
-
-
-        {/* Mobile menu */}
-
-    {/* <ul className ={`flex flex-col gap-y-12 bg-orange-500/10 backdrop-blur-xl shadow-xl rounded-xl p-10 z-50 items-center gap-x-15 md:hidden absolute top-28 -left-full transform -translate-x-1/2  transition-all duration-500 ${showMenu ? 'left-1/2' : ""}`}>
-        <li>
-        <a href="#" className="font-semibold tracking-wider text-orange-500 " alt="">Home</a>
-        </li>
-        <li>
-        <a href="#" className="font-semibold tracking-wider text-zinc-800 hover:text-orange-500"alt="">About</a>
-        </li>
-        <li>
-        <a href="#" className="font-semibold tracking-wider text-zinc-800 hover:text-orange-500"alt="">Process </a>
-        </li>
-        <li>
-        <a href="#"  className="font-semibold tracking-wider text-zinc-800 hover:text-orange-500"alt="">Contact us</a>
-        </li>
-
-        <li className="flex p-2 border-2 border-orange-500 rounded-full md:hidden">
-        <input type="text" name="text" id="text" placeholder="Search.." className=" flex-1 h-[5vh] px-3 focus:outline-none" />
-        <button className="bg-gradient-to-b from-orange-400 to-orange-500 text-white w-10 h-10 flex justify-center items-center rounded-full text-xl">
-          <IoSearch />
-         </button>
-    </li>
-
-    </ul> */}
 
     </nav>
    </header>
@@ -328,40 +270,47 @@ useEffect(() => {
 
         {/* hero/main header page starts  */}
 
-         <section>
-         <div className="max-w-[1400px] mx-auto px-10 flex items-center min-h-screen md:flex-row flex-col md:pt-25 pt-35">
-        
-            {/* hero content */}
-            <div className="flex-1">
-             {/* <span className="bg-orange-100 text-orange-500 text-lg px-5 py-2 rounded-full"> Excellence You Can Rely On...</span>  */}
-              <h1 className="md:text-7xl/20  text-5xl/14 mt-4 font-bold ">All Your Essentials, <br />
-             <span className="text-orange-500 ">Delivered</span>  Fast,  <br /> With a 
-              <span className="text-orange-500 "> Smile.</span>
-            </h1>
-        
-                        <p className="text-zinc-600 md:text-lg text-md max-w-[530px] mt-5 mb-10">
-                          Simplifying your everyday chores by delivering everything you need for your home, hassle-free.
-                        </p>
+     
+  <section className="max-w-[1400px] mx-auto px-10 flex items-center min-h-screen md:flex-row flex-col md:pt-25 pt-35">
+  <motion.div 
+    className="flex-1"
+    initial={{ opacity: 0, y: 50 }} 
+    animate={{ opacity: 1, y: 0 }} 
+    transition={{ duration: 1, ease: "easeOut" }}
+  >
+    <h1 className="md:text-7xl/20 text-5xl/14 mt-4 font-bold">
+      All Your Essentials, <br />
+      <span className="text-orange-500">Delivered</span> Fast, <br /> With a 
+      <span className="text-orange-500"> Smile.</span>
+    </h1>
+    <p className="text-zinc-600 md:text-lg text-md max-w-[530px] mt-5 mb-10">
+      Simplifying your everyday chores by delivering everything you need for your home, hassle-free.
+    </p>
+    <a onClick={() => navigate('/products')} className="bg-gradient-to-b from-green-600 to-green-800 text-white font-bold px-7 py-3 rounded-full md:text-lg text-md hover:from-green-900 transition-all duration-300 cursor-pointer inline-block">
+      Shop Now
+    </a>
+  </motion.div>
 
-                        <a  onClick={() => navigate('/products')}
-                       className="bg-gradient-to-b from-green-600 to-green-800 text-white font-bold px-7 py-3 
-                         rounded-full md:text-lg text-md hover:from-green-900 transition-all duration-300 cursor-pointer inline-block">
-                       Shop Now </a>
-        
-                    </div>
-        
-                    {/* hero Image */}
-                    <div className="flex-1">
-                        <img src={Grocery} alt="hero image" />
-                    </div>
-        
-                    </div>  
-                </section>
+  <motion.div 
+    className="flex-1"
+    initial={{ opacity: 0, x: 50 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}>
+    <img src={Grocery} alt="hero image" />
+  </motion.div>
+</section>
+
 
         {/* main header ends  */}
 
 
         {/* discount section starts  */}
+        <motion.section
+        className='pt-6 pb-6 px-9'
+        initial={{ opacity: 0, y: 100 }}          
+        whileInView={{ opacity: 1, y: 0 }}       
+        viewport={{ once: true, amount: 0.3 }}   
+        transition={{ duration: 0.8, ease: "easeOut" }}>
 
          <div className='pt-6 pb-6 px-9'>
       <section className="w-full bg-green-800 rounded-lg shadow-lg p-5">
@@ -402,11 +351,17 @@ useEffect(() => {
         </div>
       </section>
     </div>
+      </motion.section>
 
        {/* discount section ends  */}
 
         {/* values section starts */}
-
+            <motion.section
+        className='pt-6 pb-6 px-9'
+        initial={{ opacity: 0, y: 100 }}          
+        whileInView={{ opacity: 1, y: 0 }}       
+        viewport={{ once: true, amount: 0.3 }}   
+        transition={{ duration: 0.8, ease: "easeOut" }}>
              <section>
             <div className="max-w-[1400px] mx-auto px-10 py-20 ">
                 <Heading highlight="Why" heading="Shop with US ?"/>
@@ -426,37 +381,17 @@ useEffect(() => {
             <div className='md:min-h-100 md:gap-15 flex flex-col justify-between'>
             {rightValues}
             </div>
-
-
         </div>
 
             </div>
         </section>
+        </motion.section>
 
-         {/* values section ends */}
-
-
-           {/* category section starts  */}
-
-          {/* <section>
-
-            <div className="py-20 max-w-[1400px] px-10 mx-auto">
-         <Heading highlight ="Shop" heading="by Category" />
-
-         category cards
-
-        <div className="flex flex-wrap gap-10 mt-10 md:mt-20">
-           {categoryCards}
-        </div>
-
-            </div>
-
-        </section> */}
-
-            {/* category section ends  */}
+       
 
 
          </div>
+          </div>
   )
 }
 
